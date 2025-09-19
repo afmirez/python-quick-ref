@@ -107,24 +107,6 @@ summonNinjas(
     jutsu3='Strength of a Hundred Seal',
     ultimateJutsu='Perfect Susanoo'
 )
-#------------------------------------------------------------------------------#
-# Nested and Anonymous Functions
-
-# Function whiting functions
-enemies = ["Orochimaru", "Madara Uchiha", "Pain"]
-def figthRandomEnemy():
-    randomIndex = random.randint(0, len(enemies) - 1)
-    selectedEnemy = enemies[randomIndex]
-    def printFight():
-        print("You will figth with: ", selectedEnemy)
-    printFight()
-figthRandomEnemy()
-
-# Anonymous Functions
-# Function without a name. The lambda keyword is used to create anonymous
-# functions.
-chakraBoost_l = lambda power: power * power * power
-print("⚡ Chakra Boost (lambda):", chakraBoost_l(7))
 
 #------------------------------------------------------------------------------#
 # Return statement
@@ -152,3 +134,101 @@ def boostSingleChakra(chakra):
     chakra = 20
 naruto_chakra = 10
 boostSingleChakra(naruto_chakra) # Value is not modified
+
+#------------------------------------------------------------------------------#
+# Nested and Anonymous Functions
+
+# Function whiting functions
+enemies = ["Orochimaru", "Madara Uchiha", "Pain"]
+def figthRandomEnemy():
+    randomIndex = random.randint(0, len(enemies) - 1)
+    selectedEnemy = enemies[randomIndex]
+    def printFight():
+        print("You will figth with: ", selectedEnemy)
+    printFight()
+figthRandomEnemy()
+
+# Anonymous Functions
+# Function without a name. The lambda keyword is used to create anonymous
+# functions.
+chakraBoost_l = lambda power: power * power * power
+print("⚡ Chakra Boost (lambda):", chakraBoost_l(7))
+
+#------------------------------------------------------------------------------#
+# Decorators
+# Functions that extend or modify the behavior of other functions, methods, or classes,
+# without altering their original code.
+# They take a function as input, wrap it with extra functionality, and return it.
+# Common uses: Logging, Auth, Rate Limiting, Caching, Retry.
+def logAttack (attackFn):
+    def wrapper(*args, **kwargs):
+        print(f"Calling attack function: {attackFn.__name__}...")
+        result = attackFn(*args, **kwargs)
+        print(f"Function : {attackFn.__name__} finished...")
+    return wrapper
+@logAttack
+def throwPunches(times):
+    print(f"Throwing {times} punches")
+throwPunches(5)
+
+
+validRanges = ["Genin", "Chūnin", "Jōnin"]
+def requires_range(allowed_ranges):
+    def decorator(func):
+        def wrapper(user, *args, **kwargs):
+            if user["range"] not in allowed_ranges:
+                print(f"You can not fight!")
+                return None
+            return func(user, *args, **kwargs)
+        return wrapper
+    return decorator
+@requires_range(validRanges)
+def figthEnemy(user):
+    print(f"{user['name']} is fighting an enemy!")
+user_valid = {
+    "name": "Naruto Uzumaki",
+    "range": "Genin"
+}
+user_invalid = {
+    "name": "Konohamaru Sarutobi",
+    "range": "Academy Student"
+}
+fightEnemy(user_valid)   
+fightEnemy(user_invalid) 
+
+# TO-DO: Consider to move this to the classes section
+# Built-in decorators 
+# Built-in decorators for classes that adjust method/attribute behavior:
+
+# - @staticmethod: Defines a method bound to the class, not its instance.
+class NinjaTools:
+    @staticmethod
+    def kunai_count(a, b):
+        return a + b
+res = NinjaTools.kunai_count(5, 3)
+
+# - @classmethod: Defines a method bound to the class, receiving cls as first arg.
+class Ninja:
+    village = "Konoha"
+
+    @classmethod
+    def from_name(cls, name):
+        return cls(name)
+
+    def __init__(self, name):
+        self.name = name
+naruto = Ninja.from_name("Naruto")
+print(naruto.name, naruto.village) 
+
+# - @property: Turns a method into a read-only attribute (can add setter/deleter).
+class Ninja:
+    def __init__(self, name, missions):
+        self.name = name
+        self._missions = missions
+
+    @property
+    def rank(self):
+        return "Genin" if self._missions < 10 else "Chunin"
+
+naruto = Ninja("Naruto", 7)
+print(naruto.name, naruto.rank)

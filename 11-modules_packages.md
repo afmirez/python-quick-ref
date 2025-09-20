@@ -2,9 +2,7 @@
 
 ### GREAT resource: https://www.youtube.com/watch?app=desktop&v=2DRPBUiqmV4
 
-For a better view, copy and paste this file here: https://dillinger.io/
-
-#------------------------------------------------------------------------------#
+---
 
 #### Modules
 

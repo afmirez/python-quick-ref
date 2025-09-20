@@ -121,5 +121,3 @@ luffy = Pirate("Monkey D. Luffy", 19, "1,500,000,000")
 print(luffy.bounty)   # Calls the @property getter
 luffy.bounty = "2,500,000,000" # Calls the setter
 
-#------------------------------------------------------------------------------#
-# *** ITERATORS ***
